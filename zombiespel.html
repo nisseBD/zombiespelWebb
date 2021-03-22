@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="http://koda.nu/simple.js">
+
+        var zombie = {
+            x: random(totalWidth),
+            y: random(totalHeight),
+            speed: random(1, 5)
+        };
+
+        function update() {
+            clearScreen();
+
+            picture(zombie.x, zombie.y, "http://spelprogrammering.nu/bilder/zombie.png");
+
+            if (zombie.x < mouse.x)
+                zombie.x += zombie.speed;
+            else
+                zombie.x -= zombie.speed;
+
+            if (zombie.y < mouse.y)
+                zombie.y += zombie.speed;
+            else
+                zombie.y -= zombie.speed;
+
+            if (distance(mouse, zombie) < 5) {
+                alert("Game over");
+                stopUpdate();
+            }
+        };
+    </script>
+</body>
+
+</html>
