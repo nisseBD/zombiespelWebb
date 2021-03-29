@@ -9,35 +9,80 @@
 </head>
 
 <body>
-    <script src="http://koda.nu/simple.js">
+    <h1 id="title">Fåglarnas kamp</h1>
+    <button id="nyttspel" onclick="runGame()">Nytt spel!</button>
+    <canvas id="menu">
 
-        var zombie = {
-            x: random(totalWidth),
-            y: random(totalHeight),
-            speed: random(1, 5)
-        };
-
-        function update() {
-            clearScreen();
-
-            picture(zombie.x, zombie.y, "http://spelprogrammering.nu/bilder/zombie.png");
-
-            if (zombie.x < mouse.x)
-                zombie.x += zombie.speed;
-            else
-                zombie.x -= zombie.speed;
-
-            if (zombie.y < mouse.y)
-                zombie.y += zombie.speed;
-            else
-                zombie.y -= zombie.speed;
-
-            if (distance(mouse, zombie) < 5) {
-                alert("Game over");
-                stopUpdate();
-            }
+     <script>
+         var menu = function(){
+             document.getElementById("spel").style.display = "none"
+         }
+     </script>
+        
+    <script>
+        var runGame = function(){
+        document.getElementById("title").style.display = "none";
+        document.getElementById("nyttspel").style.display = "none";
+        document.getElementById("spel").style.display = "show";
         };
     </script>
+
+    <div id="spel">
+        <script src="http://koda.nu/simple.js">
+            menu();
+            
+            var zombies = [];
+
+            var i = 0;
+
+            while (i < 50){
+                zombies.push({x: random(totalWidth), 
+                        y: random(totalHeight), 
+                        speed: random(1, 5)}); 
+                
+                i += 1;
+            }
+        
+
+            var zombie = {  
+                x: random(totalWidth),
+                y: random(totalHeight),
+                speed: random(1, 5)
+            };
+
+            function update() {
+                clearScreen();
+                
+                var i = 0;
+
+                while (i < 50){
+                    var zombie = zombies[i];
+                    
+                    picture(zombie.x, zombie.y, "http://spelprogrammering.nu/bilder/zombie.png");
+
+                    if (zombie.x < mouse.x)
+                        zombie.x += zombie.speed;
+                    else
+                        zombie.x -= zombie.speed;
+
+                    if (zombie.y < mouse.y)
+                        zombie.y += zombie.speed;
+                    else
+                        zombie.y -= zombie.speed;
+
+                    if (keyboard.m)
+                        
+
+                    if (distance(mouse, zombie) < 5) {
+                        alert("Game over");
+                        stopUpdate();
+                    }
+                    i += 1;
+                }
+
+            }
+        </script>
+    </div>
 </body>
 
 </html>
