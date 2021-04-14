@@ -6,45 +6,48 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1 id="title">Fåglarnas kamp</h1>
-    <button id="nyttspel" onclick="runGame()">Nytt spel!</button>
-    <canvas id="menu">
 
-     <script>
-         var menu = function(){
-             document.getElementById("spel").style.display = "none"
-         }
-     </script>
+    <h1 id="superkraft" style="display: none;">Superkraft redo!</h1>
         
-    <script>
-        var runGame = function(){
-        document.getElementById("title").style.display = "none";
-        document.getElementById("nyttspel").style.display = "none";
-        document.getElementById("spel").style.display = "show";
-        };
-    </script>
-
-    <div id="spel">
         <script src="http://koda.nu/simple.js">
-            menu();
+
+            function myFunction() {
+                var x = document.getElementById("superkraft");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                     x.style.display = "none";
+                }
+            }
+
             
-            var zombies = [];
+
+            var kraft = 100;
+
+            var poäng = 0;
+
+            var number = 5;
+
+            var timer = 50;
+
+            var dababys = [];
 
             var i = 0;
 
             while (i < 50){
-                zombies.push({x: random(totalWidth), 
+                        dababys.push({x: random(totalWidth), 
                         y: random(totalHeight), 
                         speed: random(1, 5)}); 
                 
-                i += 1;
-            }
-        
+                    i += 1;
+                    };
+            
 
-            var zombie = {  
+            var dababy = {  
                 x: random(totalWidth),
                 y: random(totalHeight),
                 speed: random(1, 5)
@@ -53,30 +56,58 @@
             function update() {
                 clearScreen();
                 
+                death = true
+
+                text(0,40, 30, "Poäng: " + poäng, "black")
+                
+                kraft -= 1;
+                timer -= 1;
+                
+                if (timer == 0) {
+                    timer = 50
+                    number++
+                    poäng++
+                };
+
                 var i = 0;
 
-                while (i < 50){
-                    var zombie = zombies[i];
+                while (i < number){
+                    var dababy = dababys[i];
                     
-                    picture(zombie.x, zombie.y, "http://spelprogrammering.nu/bilder/zombie.png");
 
-                    if (zombie.x < mouse.x)
-                        zombie.x += zombie.speed;
+                    if (dababy.x < mouse.x) {
+                        dababy.x += dababy.speed;
+                        picture(dababy.x-39, dababy.y-50, "bild/badabyright.png", 100, 100);
+
+                    } else {
+                        dababy.x -= dababy.speed;
+                        picture(dababy.x-39, dababy.y-50, "bild/badabyleft.png", 100, 100);
+                    }    
+
+                    if (dababy.y < mouse.y)
+                        dababy.y += dababy.speed;
                     else
-                        zombie.x -= zombie.speed;
+                        dababy.y -= dababy.speed;
+                    
+                    if ((keyboard.space) && (kraft == 0)) {
+                        death = false;
+                        kraft = 100;
+                        myFunction();
+                    };
 
-                    if (zombie.y < mouse.y)
-                        zombie.y += zombie.speed;
-                    else
-                        zombie.y -= zombie.speed;
-
-                    if (keyboard.m)
-                        
-
-                    if (distance(mouse, zombie) < 5) {
-                        alert("Game over");
-                        stopUpdate();
+                    if (kraft == 0) {
+                        myFunction();
                     }
+
+                    
+                        
+                    
+                    if ((distance(mouse, dababy) < 5) && (death = true)) {
+                        text(500,500,100, "Dababy won!", "black")
+                        text(800,600,50, "Poäng: " + poäng, "black")
+                        playSound("death.mp3", 1);
+                        stopUpdate();
+                    };
                     i += 1;
                 }
 
@@ -84,5 +115,4 @@
         </script>
     </div>
 </body>
-
 </html>
