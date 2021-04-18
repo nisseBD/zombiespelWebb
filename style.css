@@ -6,3 +6,18 @@ h1 {
 #superkraft {
     text-align: center;
 }
+
+body {
+    background-image: url("/bild/bakgrundsbild.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 1920px 1080px;
+}
+
+#meny {
+    margin-top: 200px;
+}
+
+#dababy {
+    font-size: 150px;
+}

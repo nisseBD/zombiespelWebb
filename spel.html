@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1 id="superkraft" style="display: none;">DABABYPOWER REDO!! (tryck spacebar)</h1>
+        
+        <script src="http://koda.nu/simple.js">
+            // Funktion som togglar texten med idt superkraft mellan synlig och osynlig vid kallning
+            function myFunction() {
+                var x = document.getElementById("superkraft");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                     x.style.display = "none";
+                }
+            }
+            // När gameover blir true är spelet över
+            var gameover = false;
+            // När immun är över 0 så är man immun
+            var immun = 0;
+            // Efter 500 frames så kan man använda sin superkraft
+            var kraft = 500;
+            // Varje dababy som spawnar efter de fem första är de poängen man får
+            var poäng = 0;
+            // Antalet dababys i början
+            var number = 5;
+            // Efter 50 frames spawnar en till dababy
+            var timer = 50;
+            // En array där dababys lägg in
+            var dababys = [];
+            // Så många dababys som ska pushas
+            var i = 0;
+            // När i är mindre än 99999 så ska den fortsätta pusha ut dababys
+            while (i < 99999){
+                        dababys.push({x: random(totalWidth), 
+                        y: random(totalHeight), 
+                        speed: random(7, 15)}); 
+                
+                    i += 1;
+                    };
+            
+            // Variabel för dababy om dens storlek och hastighet
+            var dababy = {  
+                x: random(totalWidth),
+                y: random(totalHeight),
+                speed: random(7, 15)
+            };
+            // Funktion ger spelet frames så att saker kan röra på sig
+            function update() {
+                // Funktion som rensar ritytan 
+                clearScreen();
+                // Detta händer när gameover blir true
+                if (gameover) {
+                    text(500,300,100, "Dababy won!", "black")
+                    text(800,400,50, "Poäng: " + poäng, "black")
+                    text(700,500,25, "Tryck R för att starta om")
+                    text(600,600,25, "Tryck M för att komma till menyn")
+                    // När man trycker på r så reloadar sidan
+                    if (keyboard.r) {
+                        location.reload();
+                    }
+                    // Redirectar en till index.html
+                    if (keyboard.m) {
+                        window.location.replace("index.html")
+                    }
+                // Om gameover är false så blir dessa variablerna 1 mindre per frame
+                } else {
+                    immun -= 1;
+                    kraft -= 1;
+                    timer -= 1;
+                }
+                // Text för poängsystemet
+                text(0,40, 30, "Poäng: " + poäng, "black")
+                
+                
+                // När timer når 0 så kommer en ny dababy och tiden resettar
+                if (timer == 0) {
+                    timer = 50
+                    number++
+                    poäng++
+                };
+                // Variabel som hjälper spelet att trycka ut dababys
+                var i = 0;
+
+                // När i är mindre är number så kommer en ny dababy
+                while (i < number){
+                    // Hämtar ut dababy nummer i inuti arrayen dababys vilket gör att man kan ha olika hastighet och storlek på olika dababys
+                    var dababy = dababys[i];
+                    // När gameover är true så stannar alla dababys
+                    if (gameover) {
+                        dababy.speed = 0;
+                    }
+                    // Gör så att dababysarna följer efter musen 
+                    if (dababy.x < mouse.x) {
+                        dababy.x += dababy.speed;
+                        picture(dababy.x-39, dababy.y-50, "bild/badabyright.png", 100, 100);
+                    // Gör så att dababysarna följer efter musen 
+                    } else {
+                        dababy.x -= dababy.speed;
+                        picture(dababy.x-39, dababy.y-50, "bild/badabyleft.png", 100, 100);
+                    }    
+                    // Gör så att dababysarna följer efter musen 
+                    if (dababy.y < mouse.y)
+                        dababy.y += dababy.speed;
+                    // Gör så att dababysarna följer efter musen 
+                    else
+                        dababy.y -= dababy.speed;
+                    // När man trycker på space så blir man immun men endast om de andra villkoren också stämmer
+                    if ((keyboard.space) && (kraft <= 0)) {
+                        immun = 200;
+                        kraft = 500;
+                        myFunction();
+                    };
+                    // När man är immun så får man en stjärna på musen
+                    if (immun > 0) {
+                        picture(mouse.x-25, mouse.y-25, "bild/immunestar.png", 50, 50);
+                    }
+                    // När kraft står på 0 så visas en text som säger att superkraften är tillgänglig
+                    if (kraft == 0) {
+                        myFunction();
+                    }
+                    // Gör så att spelet avslutas när muspekarn är tillräckligt nära en dababy och man inte är immun
+                    if ((distance(mouse, dababy) < 5) && (immun <= 0)) {
+                        gameover = true;
+                    };
+                    i += 1;
+                }
+            }
+        </script>
+
+</body>
+</html>
